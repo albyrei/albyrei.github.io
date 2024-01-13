@@ -1,0 +1,96 @@
+{{ define "main" }}
+<div class="text-center">
+  <section>
+    <div class="container">
+      <div
+        class="from-body to-theme-light dark:from-darkmode-body dark:to-darkmode-theme-light rounded-2xl py-10 mt-5 no-after">
+
+        <h1>{{ .Title | title }}</h1>
+        {{/* {{ partial "components/breadcrumb" (dict "Context" . "Class" "mt-6") }} */}}
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="">
+  <div class="container">
+    <ul class="text-center">
+      {{/* categories */}}
+      {{ range site.Taxonomies.argomenti.ByCount }}
+      <li class="m-3 inline-block">
+        <a href="{{ .Page.Permalink }}"
+          class="bg-theme-light text-dark dark:bg-darkmode-theme-light dark:text-darkmode-dark block rounded px-4 py-2 text-xl">
+          {{ .Page.Title }}
+          <span class="bg-body dark:bg-darkmode-body ml-2 rounded px-2">
+            {{ .Count }}
+          </span>
+        </a>
+      </li>
+      {{ end }}
+      {{/* tags */}}
+      {{ if eq .Permalink (`tags/` | absLangURL) }}
+      {{ range site.Taxonomies.tags.ByCount }}
+      <li class="m-3 inline-block">
+        <a href="{{ .Page.Permalink }}"
+          class="bg-theme-light text-dark dark:bg-darkmode-theme-light dark:text-darkmode-dark block rounded px-4 py-2 text-xl">
+          {{ .Page.Title }}
+          <span class="bg-body dark:bg-darkmode-body ml-2 rounded px-2">
+            {{ .Count }}
+          </span>
+        </a>
+      </li>
+      {{ end }}
+      {{ end }}
+    </ul>
+  </div>
+</section>
+<section class="mt-14 mb-14">
+  <div class="container">
+    <div class="row gx-5">
+      <!-- blog posts -->
+      <div class="lg:col-12">
+        <div class="row mb-14">
+          {{ $paginator:= .Paginate .RegularPages }}
+          {{ range $paginator.Pages }}
+          <div class="md:col-12 ">
+            <div class="row single-guida">
+              <div class="md:col-2 text-right">
+                <span class="date">{{ .Date | time.Format (.Site.Params.dateFormat | default "2/01/2006" ) }}</span>
+              </div>
+              <div class="md:col-6">
+                <h2 class="mb-3">
+                  <a href="{{ .RelPermalink }}" style="color:white">
+                    {{ .Title }}
+                  </a>
+                </h2>
+              </div>
+              <div class="md:col-4 text-right">
+                {{ $argomenti:= .Params.argomenti }}
+                {{ range $i,$p:= $argomenti }}
+                <a href="{{ `argomenti/` | relLangURL }}{{ . | urlize | lower }}/" class="ms-1 uppercase">
+                  (
+                    {{ . | humanize }}{{ if
+                  ne $i
+                  (sub (len $argomenti) 1) }}
+                  {{ ", " }}
+                  {{ end }}
+                  )
+                </a>
+                {{ end }}
+              </div>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+        {{ partial "components/pagination.html" . }}
+      </div>
+      <!-- sidebar -->
+      {{/* <div class="lg:col-4">
+        <!-- widget -->
+        {{ $widget:= site.Params.widgets.sidebar }}
+        {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
+      </div> */}}
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,113 @@
+{{ define "main" }}
+<section class="section pt-7">
+  <div class="container">
+    <div class="row justify-center">
+      <article class="lg:col-10">
+        {{ $image:= .Params.image }}
+        {{ if $image }}
+        <div class="mb-10">
+          {{ partial "image" (dict "Src" $image "Alt" .Title "Class" "w-full rounded") }}
+        </div>
+        {{ end }}
+        <h1 class="h2 mb-4">
+          {{ .Title }}
+        </h1>
+        <ul class="mb-4">
+          <li class="mr-4 inline-block">
+            <a href="/chi-sono/">
+              <i class="fa-regular fa-circle-user mr-2"></i>Alby Rei
+            </a>
+          </li>
+          <li class="mr-4 inline-block">
+            <i class="fa-regular fa-folder mr-2"></i>
+            {{ $argomenti:= .Params.argomenti }}
+            {{ range $i,$p:= $argomenti }}
+            <a href="{{ `argomenti/` | relLangURL }}{{ . | urlize | lower }}/" class="ms-1 uppercase">{{ . | humanize
+              }}{{ if ne $i (sub (len $argomenti) 1) }}
+              {{ ", " }}
+              {{ end }}
+            </a>
+            {{ end }}
+          </li>
+          <li class="mr-4 inline-block">
+            <i class="fa-regular fa-clock mr-2"></i>
+            {{ time.Format "02/01/2006" .PublishDate }}
+          </li>
+        </ul>
+        <div class="content mb-10">
+          {{ .Content }}
+        </div>
+        <div class="row items-start justify-between">
+          <!--<div class="lg:col-5 mb-10 flex items-center lg:mb-0">
+              <h5 class="mr-3">{{ i18n "tags" }} :</h5>
+              <ul>
+                {{ $tags:= .Params.tags }}
+                {{ range $i,$p:= $tags }}
+                  <li class="inline-block">
+                    <a
+                      class="bg-theme-light hover:bg-primary dark:bg-darkmode-theme-light dark:hover:bg-darkmode-primary dark:hover:text-dark m-1 block rounded px-3 py-1 hover:text-white"
+                      href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/">
+                      {{ . | humanize }}
+                    </a>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>-->
+          <div class="lg:col-12 flex items-center">
+            {{ partial "social-share" (dict "Context" . "Class" "share-icons" "Title" (i18n "share") "Whatsapp" false
+            "Telegram" false) }}
+          </div>
+        </div>
+        <!-- comments
+          {{ if site.DisqusShortname }}
+            <div class="mt-20">
+              {{ template "_internal/disqus.html" . }}
+            </div>
+          {{ end }} -->
+      </article>
+    </div>
+
+    <!-- Related posts -->
+    {{ $related := (where site.RegularPages "Section" "in" "guide") | intersect (where site.RegularPages ".Title" "!="
+    .Title) | union (site.RegularPages.Related . ) }}
+    {{ $related = $related | shuffle | first 10 }}
+    {{ with $related }}
+    <div class="section pb-0">
+      <h2 class="h3 mb-12 text-center">{{ i18n "related_posts" }}</h2>
+      <div class="row">
+        {{ range . }}
+        <div class="md:col-12">
+          <div class="row single-guida mb-7 md:mb-0">
+            <div class="md:col-2 text-left text-md-right">
+              <span class="date">{{ .Date | time.Format (.Site.Params.dateFormat | default "2/01/2006" ) }}</span>
+            </div>
+            <div class="md:col-6">
+              <h2 class="mb-3">
+                <a href="{{ .RelPermalink }}" style="color:white">
+                  {{ .Title }}
+                </a>
+              </h2>
+            </div>
+            <div class="md:col-4 text-left text-md-right">
+              {{ $argomenti:= .Params.argomenti }}
+              {{ range $i,$p:= $argomenti }}
+              <a href="{{ `argomenti/` | relLangURL }}{{ . | urlize | lower }}/" class="ms-1 uppercase">
+                (
+                {{ . | humanize }}{{ if
+                ne $i
+                (sub (len $argomenti) 1) }}
+                {{ ", " }}
+                {{ end }}
+                )
+              </a>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

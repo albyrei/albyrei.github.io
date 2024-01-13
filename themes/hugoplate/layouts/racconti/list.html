@@ -1,0 +1,60 @@
+{{ define "main" }}
+{{ partial "page-header" . }}
+
+
+<section class="section-blog">
+  <div class="container">
+    <div class="row gx-5">
+      <!-- blog posts -->
+      <div class="lg:col-12">
+        <div class="row">
+          {{ $paginator:= .Paginate .RegularPages }}
+          {{ range $paginator.Pages }}
+          <div class="md:col-4 mb-14">
+            <div class="bg-body dark:bg-darkmode-body">
+              {{ $image:= .Params.image }}
+              {{ if $image }}
+              <a href="{{ .RelPermalink }}">
+                {{ partial "image" (dict "Src" $image "Alt" .Title "Class" "mb-6 w-full rounded") }}
+              </a>
+              {{ end }}
+              <h4 class="mb-3">
+                <a href="{{ .RelPermalink }}">
+                  {{ .Title }}
+                </a>
+              </h4>
+
+              <ul class="mb-4" style="font-size:16px">
+                <li class="mr-4 inline-block">
+                  <a href="/chi-sono/">
+                    <i class="fa-regular fa-circle-user mr-2"></i>{{ .Params.author }}
+                  </a>
+                </li>
+                <li class="mr-4 inline-block">
+                  <i class="fa-regular fa-folder mr-2"></i>
+                  {{ $raccolte:= .Params.raccolte }}
+                  {{ range $i,$p:= $raccolte }}
+                  <a href="{{ `raccolte/` | relLangURL }}{{ . | urlize | lower }}/" class="ms-1">{{ . | humanize }}{{
+                    if ne $i
+                    (sub (len $raccolte) 1) }}
+                    {{ ", " }}
+                    {{ end }}
+                  </a>
+                  {{ end }}
+                </li>
+              </ul>
+              <p class="mb-6">{{ .Summary }}</p>
+              <a class="btn btn-outline-primary btn-sm" href="{{ .RelPermalink }}">
+                {{ i18n "read_more" }}
+              </a>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+        {{ partial "components/pagination.html" . }}
+      </div>
+      <!-- sidebar -->
+    </div>
+  </div>
+</section>
+{{ end }}

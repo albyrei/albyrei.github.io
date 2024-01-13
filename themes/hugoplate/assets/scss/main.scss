@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import "base";
+}
+
+@layer components {
+  @import "components";
+  @import "navigation";
+  @import "buttons";
+}
+
+@layer utilities {
+  @import "utilities";
+}
+
+@import "search";
+@import "social-share";
+@import "gallery-slider";
+@import "images";
+@import "toc";
+@import "tab";
+@import "accordion";
+@import "modal";
+@import "notice";
+
+@import "module-overrides";
+@import "custom";
+
+
+body {
+  font-family: 'Inconsolata', monospace;
+  font-size: 20px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 900 !important;
+}
+
+h1 {
+  &:after {
+    content: "";
+    display: block;
+    width: 75px;
+    height: 2px;
+    background: #D3AA65;
+    /* right: 0; */
+    /* top: 50%; */
+    position: absolute;
+  }
+}
+
+.no-after {
+  h1 {
+    &:after {
+      content: "";
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 980px;
+  }
+}
+
+.content :is(:where(p):not(:where([class~="not-prose"], [class~="not-prose"] *))) {
+  font-size: 20px !important
+}
+
+.content {
+  font-size: 20px !important
+}
+
+.header {
+  margin: 10px 0;
+}
+
+.navbar-brand {
+  .img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+.single-guida {
+  h2 {
+    font-weight: 700 !important;
+    font-size: 22px;
+
+    a {
+      font-weight: 700 !important;
+      font-size: 22px;
+    }
+  }
+}
+
+
+.section-blog{
+  .img{
+    width: 300px;
+    height: 225px;
+    object-fit: cover;
+  }
+}

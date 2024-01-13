@@ -1,0 +1,53 @@
+############# English navigation ##############
+
+# main menu
+[[main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Chi Sono"
+url = "chi-sono/"
+weight = 2
+
+[[main]]
+name = "Sculture"
+url = "sculture/"
+weight = 3
+
+[[main]]
+name = "Sculture"
+url = "sculture/"
+weight = 3
+
+[[main]]
+name = "Musica"
+url = "musica/"
+weight = 4
+
+[[main]]
+name = "Racconti"
+url = "racconti/"
+weight = 5
+
+# footer menu
+[[footer]]
+name = "Chi Sono"
+url = "chi-sono/"
+weight = 1
+
+[[footer]]
+name = "Sculture"
+url = "sculture/"
+weight = 2
+
+[[footer]]
+name = "Musica"
+url = "musica/"
+weight = 3
+
+[[footer]]
+name = "Racconti"
+url = "racconti/"
+weight = 4
